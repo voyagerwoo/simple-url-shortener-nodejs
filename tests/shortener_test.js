@@ -41,8 +41,28 @@ const assert = require('assert');
 
     const url = shortener.redirect(hash);
 
-    let statRepository = require('../urlStatRepository');
+    const statRepository = require('../urlStatRepository');
     assert.strictEqual(url, "http://www.reimaginer.me/123");
-    assert.strictEqual(1, statRepository.findByHash(hash).length);
-
+    assert.strictEqual(1, statRepository.findLogByHash(hash).length);
 })();
+
+(() => {
+    console.log("stats 테스트 - 등록된 url의 해시 입력시 시간별 호출 카운트 반환");
+    const hash = shortener.register("http://www.reimaginer.me/124");
+
+    const url = shortener.redirect(hash);
+
+    const stats = shortener.stats(hash);
+
+    assert.strictEqual(url, "http://www.reimaginer.me/124");
+    assert.deepStrictEqual({
+        [nowHourDateTime()]: 1
+    }, stats);
+})();
+
+
+function nowHourDateTime() {
+    return new Date().toISOString().
+    replace(/T/, ' ').      // replace T with a space
+    replace(/\..+/, '').split(':')[0] + ":00:00"
+}
