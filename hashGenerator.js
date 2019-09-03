@@ -1,4 +1,4 @@
-function generate(url) {
+exports.generate = (url) => {
     if (!url)
         throw "EMPTY URL";
 
@@ -7,5 +7,3 @@ function generate(url) {
         .toString('base64');
 
 }
-
-exports.generate = generate;

@@ -1,10 +1,10 @@
 const map = new Map();
 
-exports.findLogByHash = function(hash) {
+exports.findLogByHash = (hash) => {
     return (map.get(hash) || [])
 };
 
-exports.findByHash = function(hash) {
+exports.findByHash = (hash) => {
     return (map.get(hash) || [])
         .map(time => getHour(time))
         .reduce((acc, hour) => {
@@ -13,7 +13,7 @@ exports.findByHash = function(hash) {
         }, {})
 };
 
-exports.saveCallStat = function(hash) {
+exports.saveCallStat = (hash) => {
     const stats = map.get(hash) || [];
     stats.push(new Date());
     map.set(hash, stats)
