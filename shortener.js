@@ -10,14 +10,18 @@ function register(url) {
         return hash;
     
     const newHash = hashGenerator.generate(url);
-    urlRepository.saveUrl(url, hash);
+    urlRepository.saveUrl(url, newHash);
     return newHash;
 }
 
 // 리다이렉트 기능
 function redirect(hash) {
+    let url = urlRepository.findByHash(hash);
+    if (!url)
+        throw 'NOT REGISTER URL';
+
     urlStatRepository.saveCallStat(hash);
-    return urlRepository.findByHash(hash);
+    return url;
 }
 
 // 통계 기능
